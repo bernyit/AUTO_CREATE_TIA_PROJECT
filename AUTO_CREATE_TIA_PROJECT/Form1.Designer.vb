@@ -32,6 +32,10 @@ Partial Class Form1
         Me.btnCreateProject = New System.Windows.Forms.Button()
         Me.btnProjectProperties = New System.Windows.Forms.Button()
         Me.btnCompile = New System.Windows.Forms.Button()
+        Me.btnSystemBlocks = New System.Windows.Forms.Button()
+        Me.btnAllBlocks = New System.Windows.Forms.Button()
+        Me.btnSingleBlock = New System.Windows.Forms.Button()
+        Me.btnCreateGroup = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'btnOpenTia15
@@ -124,11 +128,51 @@ Partial Class Form1
         Me.btnCompile.Text = "Compila progetto"
         Me.btnCompile.UseVisualStyleBackColor = True
         '
+        'btnSystemBlocks
+        '
+        Me.btnSystemBlocks.Location = New System.Drawing.Point(764, 359)
+        Me.btnSystemBlocks.Name = "btnSystemBlocks"
+        Me.btnSystemBlocks.Size = New System.Drawing.Size(218, 83)
+        Me.btnSystemBlocks.TabIndex = 27
+        Me.btnSystemBlocks.Text = "Mostra Blocchi di sistema"
+        Me.btnSystemBlocks.UseVisualStyleBackColor = True
+        '
+        'btnAllBlocks
+        '
+        Me.btnAllBlocks.Location = New System.Drawing.Point(764, 448)
+        Me.btnAllBlocks.Name = "btnAllBlocks"
+        Me.btnAllBlocks.Size = New System.Drawing.Size(218, 83)
+        Me.btnAllBlocks.TabIndex = 28
+        Me.btnAllBlocks.Text = "Mostra tutti i Blocchi"
+        Me.btnAllBlocks.UseVisualStyleBackColor = True
+        '
+        'btnSingleBlock
+        '
+        Me.btnSingleBlock.Location = New System.Drawing.Point(988, 448)
+        Me.btnSingleBlock.Name = "btnSingleBlock"
+        Me.btnSingleBlock.Size = New System.Drawing.Size(218, 83)
+        Me.btnSingleBlock.TabIndex = 29
+        Me.btnSingleBlock.Text = "Mostra singolo Blocco"
+        Me.btnSingleBlock.UseVisualStyleBackColor = True
+        '
+        'btnCreateGroup
+        '
+        Me.btnCreateGroup.Location = New System.Drawing.Point(988, 359)
+        Me.btnCreateGroup.Name = "btnCreateGroup"
+        Me.btnCreateGroup.Size = New System.Drawing.Size(218, 83)
+        Me.btnCreateGroup.TabIndex = 30
+        Me.btnCreateGroup.Text = "Crea  gruppo ""MySubGroupName"""
+        Me.btnCreateGroup.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1231, 567)
+        Me.Controls.Add(Me.btnCreateGroup)
+        Me.Controls.Add(Me.btnSingleBlock)
+        Me.Controls.Add(Me.btnAllBlocks)
+        Me.Controls.Add(Me.btnSystemBlocks)
         Me.Controls.Add(Me.btnCompile)
         Me.Controls.Add(Me.btnProjectProperties)
         Me.Controls.Add(Me.btnCreateProject)
@@ -156,4 +200,8 @@ Partial Class Form1
     Friend WithEvents btnCreateProject As Button
     Friend WithEvents btnProjectProperties As Button
     Friend WithEvents btnCompile As Button
+    Friend WithEvents btnSystemBlocks As Button
+    Friend WithEvents btnAllBlocks As Button
+    Friend WithEvents btnSingleBlock As Button
+    Friend WithEvents btnCreateGroup As Button
 End Class

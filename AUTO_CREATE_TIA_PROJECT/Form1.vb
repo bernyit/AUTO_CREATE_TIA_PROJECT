@@ -4,6 +4,7 @@ Imports Siemens.Engineering.Compiler
 Imports Siemens.Engineering.HW
 Imports Siemens.Engineering.HW.Features
 Imports Siemens.Engineering.SW
+Imports Siemens.Engineering.SW.Blocks
 
 Public Class Form1
 
@@ -59,7 +60,7 @@ Public Class Form1
             myPlcSoftware = GetPlcSoftware(MyDevice)
         End If
 
-
+        EnumerateDevicesInProject(MyProject)
         'For Each device As Device In MyProject.Devices
 
         '    Console.WriteLine(device.Name.ToString)
@@ -67,7 +68,22 @@ Public Class Form1
 
     End Sub
 
+    Private Shared Sub EnumerateDevicesInProject(ByVal project As Project)
+        Dim deviceComposition As DeviceComposition = project.Devices
 
+        For Each device As Device In deviceComposition
+            MsgBox(device.Name)
+        Next
+    End Sub
+
+    ''' <summary>
+    ''' Pagina 215
+    ''' </summary>
+    ''' <param name="project"></param>
+    Private Shared Sub AccessSingleDeviceByName(ByVal project As Project)
+        Dim deviceComposition As DeviceComposition = project.Devices
+        Dim device As Device = deviceComposition.Find("MyDevice")
+    End Sub
 
     ' 
     ''' <summary>
@@ -124,7 +140,7 @@ Public Class Form1
             New KeyValuePair(Of String, Object)("Comment", "This project was created with Openness ")} ' Optional 
 
 
-        CType(ProjectComposition, IEngineeringComposition).Create(GetType(Project), createParameters)
+        CType(projectComposition, IEngineeringComposition).Create(GetType(Project), createParameters)
 
 
     End Sub
@@ -192,4 +208,129 @@ Public Class Form1
     Private Sub btnCompile_Click(sender As Object, e As EventArgs) Handles btnCompile.Click
         CompilePlcSoftware(myPlcSoftware)
     End Sub
+
+
+
+
+
+
+    'PLC program blocks
+
+    Private Shared Sub GetBlockGroupOfPLC(ByVal plcsoftware As PlcSoftware)
+        Dim blockGroup As PlcBlockSystemGroup = plcsoftware.BlockGroup
+    End Sub
+
+
+
+    Private Shared Sub systemBlocks(ByVal plcsoftware As PlcSoftware)
+        For Each systemGroup As PlcSystemBlockGroup In plcsoftware.BlockGroup.SystemBlockGroups
+
+            For Each group As PlcSystemBlockGroup In systemGroup.Groups
+                Dim pbComposition As PlcBlockComposition = group.Blocks
+
+                For Each block As PlcBlock In pbComposition
+                    MsgBox(block.Name)
+                Next
+            Next
+        Next
+    End Sub
+
+    Private Sub btnSystemBlocks_Click(sender As Object, e As EventArgs) Handles btnSystemBlocks.Click
+        systemBlocks(myPlcSoftware)
+    End Sub
+
+
+
+
+    ''' <summary>
+    ''' Elenca tutti i blocchi
+    ''' </summary>
+    ''' <param name="plcsoftware"></param>
+    Private Shared Sub EnumerateAllBlocks(ByVal plcsoftware As PlcSoftware)
+        Dim text As String = ""
+
+
+        Dim systemGroup As PlcBlockSystemGroup = plcsoftware.BlockGroup
+        Dim groupComposition As PlcBlockUserGroupComposition = systemGroup.Groups
+
+        For Each item In groupComposition
+            Dim blocks = item.Blocks
+            MsgBox(item.Name)
+            For Each block In blocks
+                GetPlcBlockInformation(block)
+            Next
+
+        Next
+
+
+        'Dim quantity As Integer = plcsoftware.BlockGroup.Blocks.Count
+        'MsgBox(quantity)
+
+        'For Each block As PlcBlock In plcsoftware.BlockGroup.Blocks
+        '    text &= block.Name & vbCrLf
+        'Next
+        'MsgBox(text)
+    End Sub
+
+    Private Shared Sub AccessASingleBlock(ByVal plcsoftware As PlcSoftware)
+        Dim block As PlcBlock = plcsoftware.BlockGroup.Blocks.Find("FC_RB001_T1")
+
+        GetPlcBlockInformation(block)
+
+    End Sub
+
+    Private Shared Sub GetPlcBlockInformation(ByVal plcBlock As PlcBlock)
+
+        Dim compileDate As DateTime = plcBlock.CompileDate
+        Dim modifiedDate As DateTime = plcBlock.ModifiedDate
+        Dim isConsistent As Boolean = plcBlock.IsConsistent
+        Dim blockNumber As Integer = plcBlock.Number
+        Dim blockName As String = plcBlock.Name
+        Dim programmingLanguage As ProgrammingLanguage = plcBlock.ProgrammingLanguage
+        Dim blockAuthor As String = plcBlock.HeaderAuthor
+        Dim blockFamily As String = plcBlock.HeaderFamily
+        Dim blockTitle As String = plcBlock.HeaderName
+        Dim blockVersion As System.Version = plcBlock.HeaderVersion
+
+        Dim blockinfo As String = ""
+
+        blockinfo &= "compileDate " & compileDate.ToString & vbCrLf
+        blockinfo &= "modifiedDate " & modifiedDate.ToString & vbCrLf
+        blockinfo &= "isConsistent " & isConsistent.ToString & vbCrLf
+        blockinfo &= "blockNumber " & blockNumber.ToString & vbCrLf
+        blockinfo &= "blockName " & blockName.ToString & vbCrLf
+        blockinfo &= "programmingLanguage " & programmingLanguage.ToString & vbCrLf
+        blockinfo &= "blockAuthor " & blockAuthor.ToString & vbCrLf
+        blockinfo &= "blockFamily " & blockFamily.ToString & vbCrLf
+        blockinfo &= "blockTitle " & blockTitle.ToString & vbCrLf
+        blockinfo &= "blockVersion " & blockVersion.ToString & vbCrLf
+        blockinfo &= "compileDate " & compileDate.ToString & vbCrLf
+        blockinfo &= "compileDate " & compileDate.ToString & vbCrLf
+
+        MsgBox(blockinfo)
+
+    End Sub
+
+
+    Private Sub btnAllBlocks_Click(sender As Object, e As EventArgs) Handles btnAllBlocks.Click
+        EnumerateAllBlocks(myPlcSoftware)
+    End Sub
+
+    Private Sub btnSingleBlock_Click(sender As Object, e As EventArgs) Handles btnSingleBlock.Click
+        AccessASingleBlock(myPlcSoftware)
+    End Sub
+
+    Private Sub btnCreateGroup_Click(sender As Object, e As EventArgs) Handles btnCreateGroup.Click
+        CreateBlockGroup(myPlcSoftware)
+    End Sub
+
+
+    Private Shared Sub CreateBlockGroup(ByVal plcsoftware As PlcSoftware)
+        Dim systemGroup As PlcBlockSystemGroup = plcsoftware.BlockGroup
+        Dim groupComposition As PlcBlockUserGroupComposition = systemGroup.Groups
+        Dim myCreatedGroup As PlcBlockUserGroup = groupComposition.Create("MySubGroupName")
+
+    End Sub
+
+
 End Class
